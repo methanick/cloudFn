@@ -8,44 +8,63 @@ admin.initializeApp();
 const express = require('express');
 const cors = require('cors');
 
-const app = express();
-app.use(cors({ origin: true }));
+const postsApi = express();
+postsApi.use(cors({ origin: true }));
 
-app.get('/', (req, res) => {
+
+//Posts API at here ( GET POST DELETE )
+postsApi.get('/', (req, res) => {
   admin.database().ref('/posts').once("value", function (data) {
+    var posts = []
+    data.forEach((childSnapshot)=>{
+      var childKey = childSnapshot.key
+      var childData = childSnapshot.val()
+      var post = {childKey,childData}
+      posts.push(post)
+      console.log(childKey)          
+    })
     console.log(data)
-    res.send(data)
+    res.send(posts)
   });
+});
 
-});
-app.get('/:id', (req, res) => {
+postsApi.get('/:id', (req, res) => {
   const id = req.params.id
-  admin.database().ref(`/posts/${id}`).once("value", function (data) {
-    console.log(data)
-    res.send(data)
+  console.log(id)
+  admin.database().ref(`/posts/${id}`).once("value", (data)=> {
+    console.log(data.val());
+    res.send(data.val());
   });
+  
 });
-app.post('/', (req, res) => {
+
+postsApi.post('/', (req, res) => {
   const data = req.body;
   admin.database().ref('/posts').push(data);
   res.send(data)
 });
-app.put('/:id', (req, res) => {
 
-  res.send(Widgets.update(req.params.id, req.body))
+
+
+postsApi.put('/:id', (req, res) => {
+  const id = req.params.id
+  const data = req.body;
+  admin.database().ref(`/posts/${id}`).update(data);
+  res.send(data)
 });
-app.delete('/:id', (req, res) => {
+
+postsApi.delete('/:id', (req, res) => {
   const id = req.params.id
   admin.database().ref(`/posts/${id}`).remove()
-    .then(function () {
+    .then(() => {
       console.log("Remove succeeded")
-      res.send(id)
-    }).catch(function (err) {
+      res.send({data:"success"})
+    }).catch((err) => {
       console.log("Remove failed: " + err.messagge)
     })
 });
-
-
 // Expose Express API as a single Cloud Function:
-exports.posts = functions.https.onRequest(app);
+exports.posts = functions.https.onRequest(postsApi);
+
+
 

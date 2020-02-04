@@ -4,24 +4,40 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      List
+      Post
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
-    </ion-item>
-  </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Post</ion-card-title>
+    </ion-card-header>
+
+
+    <ion-card-content>
+      <form [formGroup]="postForm" padding-right>
+        <ion-item>
+          <ion-label position="floating">User ID</ion-label>
+          <ion-input type="text" formControlName="userId" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Title</ion-label>
+          <ion-input type="text" formControlName="title" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Body</ion-label>
+          <ion-textarea  type="text" formControlName="body" required></ion-textarea>
+        </ion-item>
+        <div margin-top="20px">
+          <ion-button  expand="block" (click)="addPost()"[disabled]="postForm.invalid">Submit</ion-button>
+        </div>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
+
+<!-- [disabled]="!userForm.valid"  -->

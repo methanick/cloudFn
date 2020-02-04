@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card-title>Edit Post</ion-card-title>
+          </ion-col>
+          <ion-col text-end>
+            <ion-button color="danger" size="medium"  (click)="deletePost()">
+              <ion-icon slot="start" name="trash"></ion-icon>
+              DELETE           
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-header>
+
+
+    <ion-card-content>
+      <form [formGroup]="postForm" padding-right>
+        <ion-item>
+          <ion-label position="floating">User ID</ion-label>
+          <ion-input type="text" formControlName="userId" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Title</ion-label>
+          <ion-input type="text" formControlName="title" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Body</ion-label>
+          <ion-textarea type="text" formControlName="body" required></ion-textarea>
+        </ion-item>
+        <div margin-top="20px">
+          <ion-button expand="block" (click)="updatePost()" [disabled]="postForm.invalid">Update</ion-button>
+        </div>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>

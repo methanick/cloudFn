@@ -14,6 +14,14 @@ const routes: Routes = [
   {
     path: 'list',
     loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'gg-calendar',
+    loadChildren: () => import('./gg-calendar/gg-calendar.module').then( m => m.GgCalendarPageModule)
   }
 ];
 
